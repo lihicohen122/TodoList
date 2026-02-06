@@ -1,10 +1,27 @@
-# TodoList Helm Chart
+# TodoList Kubernetes Project
 
-Helm chart for the todolist app with MariaDB and PVC.
+This repository contains the TodoList application deployed on Kubernetes.
+
+## Repository Structure
+
+### `base/` and `overlays/`
+These folders contain the work done throughout the semester using Kustomize. They represent the development and production configurations for the TodoList application.
+
+### `todolist-chart/`
+**This is the Final Project** - A complete Helm chart for deploying the TodoList application.
+
+The Helm chart includes:
+- StatefulSet for MariaDB database with headless service and PVC
+- Deployments for Frontend, Backend, and WebUI
+- ConfigMaps and Secrets for configuration
+- Ingress for routing traffic
+- Network Policies for security
+- Horizontal Pod Autoscaler (HPA)
+- Database initialization Job
 
 ## Installation
 
-Install this chart from GitHub Container Registry:
+Install the Helm chart from GitHub Container Registry:
 
 ```bash
 helm install my-release oci://ghcr.io/lihicohen122/todolist/todolist --set database.password=<YOUR-PASSWORD>
@@ -32,7 +49,7 @@ After installation:
 
 ## Configuration
 
-Key configurable parameters in `values.yaml`:
+Key configurable parameters in `todolist-chart/values.yaml`:
 
 - `database.password` - MySQL root password (required, set via --set)
 - `frontend.replicas` - Number of frontend replicas (default: 1)
