@@ -28,7 +28,7 @@ spec:
             name: {{ .Values.backend.name }}-secret
         readinessProbe:
           httpGet:
-            path: /
+            path: /todos
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 5
@@ -36,7 +36,7 @@ spec:
           failureThreshold: 3
         livenessProbe:
           httpGet:
-            path: /
+            path: /todos
             port: 8080
           initialDelaySeconds: 15
           periodSeconds: 10
