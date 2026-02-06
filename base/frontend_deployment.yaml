@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todolist
+  labels:
+    app: todolist
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: todolist
+  template:
+    metadata:
+      labels:
+        app: todolist
+    spec:
+      initContainers:
+      - name: check-db-ready
+        image: busybox:1.28
+        # Checks whatever MYSQL_HOST is set to (backend or mariadb-0)
+        command: ['sh', '-c', 'until nslookup $MYSQL_HOST; do echo waiting for db; sleep 2; done;']
+        envFrom:
+        - configMapRef:
+            name: todolist-config
+      containers:
+      - name: todolist
+        image: ghcr.io/bennyro-mta/todolist:1.8
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: todolist-config
+        env:
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: todolist-secret
+              key: MYSQL_ROOT_PASSWORD
+        ports:
+        - containerPort: 5000
+        
+        # Application health checks
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 2
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 2
+          failureThreshold: 3

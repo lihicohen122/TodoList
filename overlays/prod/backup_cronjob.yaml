@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nightly-backup
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: mariadb:10.5
+            env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: todolist-secret
+                  key: MYSQL_ROOT_PASSWORD
+            command:
+            - /bin/sh
+            - -c
+            - |
+              DATE=$(date +"%Y%m%d-%H%M")
+              mkdir -p /backups/$DATE
+              echo "Starting backup for $DATE..."
+              # Note: Backup host matches statefulset identity
+              mysqldump -h mariadb-0.mariadb -u root -p$MYSQL_ROOT_PASSWORD --all-databases > /backups/$DATE/dump.sql
+              echo "Backup saved"
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /backups
+          restartPolicy: OnFailure
+          volumes:
+          - name: backup-storage
+            persistentVolumeClaim:
+              claimName: backup-pvc

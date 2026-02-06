@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.backend.name }}-config
+data:
+  MYSQL_DB: "todo"
+  MYSQL_USER: "root"
+  MYSQL_HOST: {{ .Values.env.mysqlHost | default "mariadb-headless" }}
+  MYSQL_TABLE: "todos"
+  USER: {{ .Values.env.user | default "lihi-cohen" }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.frontend.name }}-config
+data:
+  API_BASE_URL: "/todos"
+  USER: {{ .Values.env.user | default "lihi-cohen" }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.webui.name }}-config
+data:
+  MYSQL_DB: "todo"
+  MYSQL_USER: "root"
+  MYSQL_HOST: {{ .Values.env.mysqlHost | default "mariadb-headless" }}
+  USER: {{ .Values.env.user | default "lihi-cohen" }}

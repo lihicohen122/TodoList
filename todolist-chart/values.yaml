@@ -1,0 +1,39 @@
+database:
+  name: mariadb
+  image: mariadb:10.5
+  password: ""  # Must be set via --set database.password=<password>
+  storageSize: "10Gi"
+
+backend:
+  name: todos-api
+  image: ghcr.io/bennyro-mta/todos-api:1.2
+  replicas: 1
+  hpa:
+    minReplicas: 1
+    maxReplicas: 5
+    cpuTarget: 70
+
+frontend:
+  name: todolist-vue
+  image: ghcr.io/bennyro-mta/todolist-vue:1.2
+  replicas: 1
+  serviceType: LoadBalancer
+  apiBaseUrl: "/todos"
+  hpa:
+    minReplicas: 1
+    maxReplicas: 5
+    cpuTarget: 70
+
+webui:
+  name: webui
+  image: ghcr.io/bennyro-mta/webui:1.2
+  replicas: 1
+  serviceType: LoadBalancer
+
+# Environment variables
+env:
+  user: "lihi-cohen"
+  mysqlHost: "mariadb-headless"
+  apiBaseUrl: "/todos"
+
+replicaCount: 1

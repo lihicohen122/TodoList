@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.database.name }}
+spec:
+  serviceName: {{ .Values.database.name }}-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.database.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.database.name }}
+    spec:
+      containers:
+      - name: mariadb
+        image: {{ .Values.database.image }}
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: {{ .Values.database.password }}
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mariadb-storage
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mariadb-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.database.storageSize | default "10Gi" }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.database.name }}-headless
+spec:
+  clusterIP: None
+  selector:
+    app: {{ .Values.database.name }}
+  ports:
+  - port: 3306
+    targetPort: 3306

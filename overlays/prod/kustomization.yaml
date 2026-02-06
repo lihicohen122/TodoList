@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../base
+- backend_statefulset.yaml
+- backend_headless_svc.yaml
+- backup_pvc.yaml
+- backup_cronjob.yaml
+- hpa.yaml
+
+# This patch updates the ConfigMap to look for the StatefulSet DNS
+patches:
+- path: patch_config.yaml
+- path: patch_resources.yaml

@@ -1,0 +1,25 @@
+1. Access the application:
+   http://127.0.0.1
+   
+   (Make sure minikube tunnel is running: minikube tunnel)
+
+2. API endpoints:
+   - GET/POST /todos - Backend API
+   - /webui - WebUI interface
+   - / - Frontend application
+
+3. Install this chart from GitHub Container Registry:
+   helm install my-release oci://ghcr.io/lihicohen122/todolist/todolist-chart --set database.password=<YOUR-PASSWORD>
+   
+   Or with a specific version:
+   helm install my-release oci://ghcr.io/lihicohen122/todolist/todolist-chart:0.1.0 --set database.password=<YOUR-PASSWORD>
+
+4. Check pod status:
+   kubectl get pods
+
+5. View application logs:
+   kubectl logs -l app={{ .Values.backend.name }}
+   kubectl logs -l app={{ .Values.frontend.name }}
+
+6. To uninstall:
+   helm uninstall {{ .Release.Name }}

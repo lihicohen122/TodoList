@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: todolist-config
+data:
+  # Overrides 'backend' with the StatefulSet stable identity
+  MYSQL_HOST: mariadb-0.mariadb
