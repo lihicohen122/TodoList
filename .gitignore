@@ -1,0 +1,17 @@
+# Helm binary (too large for git)
+helm.exe
+
+# Packaged Helm charts
+*.tgz
+
+# Kubernetes config
+.kube/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
