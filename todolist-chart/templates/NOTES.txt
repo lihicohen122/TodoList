@@ -9,10 +9,10 @@
    - / - Frontend application
 
 3. Install this chart from GitHub Container Registry:
-   helm install my-release oci://ghcr.io/lihicohen122/todolist/todolist-chart --set database.password=<YOUR-PASSWORD>
+   helm install my-release oci://ghcr.io/lihicohen122/todolist/todolist --set database.password=<YOUR-PASSWORD>
    
    Or with a specific version:
-   helm install my-release oci://ghcr.io/lihicohen122/todolist/todolist-chart:0.1.0 --set database.password=<YOUR-PASSWORD>
+   helm install my-release oci://ghcr.io/lihicohen122/todolist/todolist:0.1.0 --set database.password=<YOUR-PASSWORD>
 
 4. Check pod status:
    kubectl get pods
