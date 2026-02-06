@@ -1,6 +1,6 @@
 apiVersion: v2
-name: todolist-chart
-description: A Helm chart for my TodoList app
+name: todolist
+description: Helm chart for the todolist app with MariaDB and PVC
 type: application
 version: 0.1.0
 appVersion: "1.0.0"
