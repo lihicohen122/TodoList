@@ -11,9 +11,15 @@ spec:
     spec:
       restartPolicy: OnFailure
       initContainers:
-      - name: wait-for-db
+      - name: wait-for-dns
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup {{ .Values.database.name }}-headless; do echo waiting for database; sleep 2; done;']
+      - name: wait-for-mysql
+        image: {{ .Values.database.image }}
+        command: ['sh', '-c', 'until mariadb -h{{ .Values.database.name }}-headless -uroot -p$MYSQL_PWD -e "select 1"; do echo waiting for MySQL; sleep 2; done;']
+        env:
+        - name: MYSQL_PWD
+          value: {{ .Values.database.password }}
       containers:
       - name: init-db
         image: {{ .Values.database.image }}
@@ -21,7 +27,7 @@ spec:
         - /bin/bash
         - -c
         - |
-          mysql -h{{ .Values.database.name }}-headless -uroot -p{{ .Values.database.password }} <<EOF
+          mariadb -h{{ .Values.database.name }}-headless -uroot -p{{ .Values.database.password }} <<EOF
           CREATE DATABASE IF NOT EXISTS todo;
           USE todo;
           CREATE TABLE IF NOT EXISTS todos (

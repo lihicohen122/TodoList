@@ -21,6 +21,8 @@ The Helm chart includes:
 
 ## Installation
 
+**Current chart version:** 0.1.2
+
 Install the Helm chart from GitHub Container Registry:
 
 ```bash
@@ -30,7 +32,7 @@ helm install my-release oci://ghcr.io/lihicohen122/todolist/todolist --set datab
 Or with a specific version:
 
 ```bash
-helm install my-release oci://ghcr.io/lihicohen122/todolist/todolist:0.1.0 --set database.password=<YOUR-PASSWORD>
+helm install my-release oci://ghcr.io/lihicohen122/todolist/todolist:0.1.2 --set database.password=<YOUR-PASSWORD>
 ```
 
 ## Access the Application
