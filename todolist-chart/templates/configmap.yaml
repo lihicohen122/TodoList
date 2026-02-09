@@ -22,6 +22,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.webui.name }}-config
 data:
+  API_BASE_URL: {{ .Values.env.apiBaseUrl | default "/todos" }}
   MYSQL_DB: "todo"
   MYSQL_USER: "root"
   MYSQL_HOST: {{ .Values.env.mysqlHost | default "mariadb-headless" }}

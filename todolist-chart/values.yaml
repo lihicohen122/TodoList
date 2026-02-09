@@ -26,7 +26,7 @@ frontend:
 
 webui:
   name: webui
-  image: ghcr.io/bennyro-mta/webui:1.2
+  image: ghcr.io/bennyro-mta/todolist-vue:1.2
   replicas: 1
   serviceType: LoadBalancer
 
